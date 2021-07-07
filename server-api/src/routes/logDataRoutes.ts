@@ -1,9 +1,5 @@
 import { Router } from 'express';
-import {
-  latestFile,
-  stats,
-  uploadFile,
-} from '../controllers/logDataControllers';
+import { latestFile, stats, uploadFile } from '../controllers/logDataControllers';
 import upload from '../services/upload';
 
 const logDataRoutes = Router();
