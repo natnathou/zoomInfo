@@ -7,7 +7,7 @@ import {
   saveLastResponse,
   setFileNumberParsed,
   setLineNumberParsed,
-} from '../provider/csvDataProvider';
+} from '../providers/csvDataProvider';
 
 export const parserWorker = (
   path: string,

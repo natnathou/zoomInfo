@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import path from 'path';
-import { getLastResponse, getStats } from '../provider/csvDataProvider';
+import { getLastResponse, getStats } from '../providers/csvDataProvider';
 import { readFileWorker } from '../tools/runWorker';
 
 export const uploadFile = async (req: Request, res: Response) => {
