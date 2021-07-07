@@ -3,11 +3,14 @@ import fs from 'fs';
 import path from 'path';
 
 console.log('in read worker before');
-console.log(workerData.value);
-let readStream = fs.createReadStream(
-  path.join(__dirname, '../..', workerData.value)
-);
+let readStream = fs.createReadStream(path.resolve(workerData.value.path));
 
 readStream.on('data', (chunk) => {
   parentPort.postMessage(chunk.toString());
+});
+
+readStream.on('end', () => {
+  fs.unlink(workerData.value.path, () => {
+    console.log(workerData.value.fileName, ' has been deleted');
+  });
 });

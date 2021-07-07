@@ -50,7 +50,7 @@ export const readFileWorker = (
 
   worker.on('message', (response: string) => {
     data += response;
-    console.log('message readFileWorker');
+    // console.log('message readFileWorker');
   });
   worker.on('exit', () => {
     const workerParser = parserWorker(

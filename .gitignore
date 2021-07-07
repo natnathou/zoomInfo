@@ -1,2 +1,5 @@
 server-api/src/click_log.csv
 server-api/src/test.csv
+server-api/src/uploads/click_log.csv
+redis-storage-persistent/appendonly.aof
+redis-storage-persistent/temp-1.rdb

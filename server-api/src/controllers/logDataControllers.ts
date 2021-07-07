@@ -1,21 +1,27 @@
 import { Request, Response } from 'express';
+import multer from 'multer';
 import path from 'path';
 import { getLastResponse, getStats } from '../providers/csvDataProvider';
 import { readFileWorker } from '../tools/runWorker';
 
 export const uploadFile = async (req: Request, res: Response) => {
-  const worker = readFileWorker(
-    path.join(__dirname, '..', './workers/readFileWorker/readFileWorker.js'),
-    {
-      value: 'click_log.csv',
-      path: path.resolve(
-        __dirname,
-        '..',
-        './workers/readFileWorker/readFileWorker.ts'
-      ),
-    },
-    res
-  );
+  if (!req.file) {
+    console.log('No file is available!');
+    return res.status(500);
+  } else {
+    const worker = readFileWorker(
+      path.join(__dirname, '..', './workers/readFileWorker/readFileWorker.js'),
+      {
+        value: { fileName: req.file.originalname, path: req.file.path },
+        path: path.resolve(
+          __dirname,
+          '..',
+          './workers/readFileWorker/readFileWorker.ts'
+        ),
+      },
+      res
+    );
+  }
 };
 
 export const latestFile = async (req: Request, res: Response) => {
