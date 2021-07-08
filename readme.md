@@ -10,4 +10,5 @@ GET: http://localhost:8080/logdata/latestFile
 GET: http://localhost:8080/logdata/stats
 
 Field of the attachment in the form data have to be 'file':
+
 POST: http://localhost:8080/logdata/upload
