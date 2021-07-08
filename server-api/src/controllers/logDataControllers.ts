@@ -13,11 +13,7 @@ export const uploadFile = async (req: Request, res: Response) => {
       path.join(__dirname, '..', './workers/readFileWorker/readFileWorker.js'),
       {
         value: { fileName: req.file.originalname, path: req.file.path },
-        path: path.resolve(
-          __dirname,
-          '..',
-          './workers/readFileWorker/readFileWorker.ts'
-        ),
+        path: path.resolve(__dirname, '..', './workers/readFileWorker/readFileWorker.ts'),
       },
       res
     );

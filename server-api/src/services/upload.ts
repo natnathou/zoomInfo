@@ -2,6 +2,7 @@ import multer from 'multer';
 import { Request } from 'express';
 import path from 'path';
 
+console.log(__dirname);
 let storage = multer.diskStorage({
   destination: (req: Request, file, cb) => {
     cb(null, path.join(__dirname, '..', '/uploads'));

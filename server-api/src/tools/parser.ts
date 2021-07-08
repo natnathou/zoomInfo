@@ -1,6 +1,6 @@
 export const parser = (data: string) => {
   let allRows = data.split(/\r?\n|\r/);
-  let RowDividedByCell = allRows.map((x) => x.split(','));
+  let RowDividedByCell = allRows.map((x) => x.split(/,|;/));
   let keyObj = RowDividedByCell[0];
 
   let result = RowDividedByCell.filter((x, i) => i !== 0).map((x, i) => {

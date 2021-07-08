@@ -4,7 +4,7 @@ import upload from '../services/upload';
 
 const logDataRoutes = Router();
 
-logDataRoutes.post('/upload', upload.single('image'), uploadFile);
+logDataRoutes.post('/upload', upload.single('file'), uploadFile);
 
 logDataRoutes.get('/latestFile', latestFile);
 

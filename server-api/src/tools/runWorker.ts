@@ -34,9 +34,7 @@ export const parserWorker = (
     res.status(500);
   });
 
-  worker.on('exit', () => {
-    console.log('exit parserWorker');
-  });
+  worker.on('exit', () => {});
 };
 
 export const readFileWorker = (
@@ -54,11 +52,7 @@ export const readFileWorker = (
   });
   worker.on('exit', () => {
     const workerParser = parserWorker(
-      pathModule.join(
-        __dirname,
-        '..',
-        './workers/parserWorker/parserWorker.js'
-      ),
+      pathModule.join(__dirname, '..', './workers/parserWorker/parserWorker.js'),
       {
         value: data,
         path: pathModule.resolve(

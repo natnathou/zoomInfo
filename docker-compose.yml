@@ -1,5 +1,14 @@
 version: '3.9'
 services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    ports:
+      - '8080:80'
+    restart: always
+    stdin_open: true
+    tty: true
   api:
     build:
       context: ./server-api
@@ -12,7 +21,6 @@ services:
     tty: true
     ports:
       - '5858:5858'
-      - '5000:5000'
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
