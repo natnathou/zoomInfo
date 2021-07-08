@@ -1,6 +1,7 @@
 export const smallText = `titre1,titre2,titre3
 1,2,3
-4,5,6`;
+4,5,6
+`;
 
 export const bigText = `titre1,titre2,titre3,titre4,titre5,titre6,titre7,titre8,titre9
 1,1,1,1,1,1,1,1,1
@@ -14,7 +15,8 @@ export const bigText = `titre1,titre2,titre3,titre4,titre5,titre6,titre7,titre8,
 9,9,9,9,9,9,9,9,9
 10,10,10,10,10,10,10,10,10
 11,11,11,11,11,11,11,11,11
-12,12,12,12,12,12,12,12,12`;
+12,12,12,12,12,12,12,12,12
+`;
 
 export const smallResponses = [
   { titre1: '1', titre2: '2', titre3: '3' },
