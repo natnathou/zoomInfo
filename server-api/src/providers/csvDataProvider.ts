@@ -1,8 +1,8 @@
-import { redisClient } from '../services/db';
+import { setAsync, getAsync } from '../services/db';
 
 export const getLineNumberParsed = async (responseLength: number) => {
   try {
-    let lastLineNumberParsed = await redisClient.get('lineNumberParsed');
+    let lastLineNumberParsed = await getAsync('lineNumberParsed');
     if (lastLineNumberParsed) {
       lastLineNumberParsed += responseLength;
       return lastLineNumberParsed;
@@ -15,7 +15,7 @@ export const getLineNumberParsed = async (responseLength: number) => {
 
 export const setLineNumberParsed = async (data: string) => {
   try {
-    await redisClient.set('lineNumberParsed', data);
+    await setAsync('lineNumberParsed', data);
   } catch (error) {
     console.log(error);
   }
@@ -24,7 +24,7 @@ export const setLineNumberParsed = async (data: string) => {
 export const getFileNumberParsed = async () => {
   let fileNumberParsed = 1;
   try {
-    let fileNumberParsedString = await redisClient.get('fileNumberParsed');
+    let fileNumberParsedString = await getAsync('fileNumberParsed');
     if (fileNumberParsedString) {
       fileNumberParsed = parseInt(fileNumberParsedString) + 1;
     }
@@ -36,7 +36,7 @@ export const getFileNumberParsed = async () => {
 
 export const setFileNumberParsed = async (fileNumber: number) => {
   try {
-    await redisClient.set('fileNumberParsed', fileNumber.toString());
+    await setAsync('fileNumberParsed', fileNumber.toString());
   } catch (error) {
     console.log(error);
   }
@@ -44,10 +44,7 @@ export const setFileNumberParsed = async (fileNumber: number) => {
 
 export const saveLastResponse = async (data: {}) => {
   try {
-    let lastResponse = await redisClient.set(
-      'lasResponse',
-      JSON.stringify(data)
-    );
+    let lastResponse = await setAsync('lasResponse', JSON.stringify(data));
   } catch (error) {
     console.log(error);
   }
@@ -55,7 +52,7 @@ export const saveLastResponse = async (data: {}) => {
 
 export const getLastResponse = async () => {
   try {
-    let response = await redisClient.get('lasResponse');
+    let response = await getAsync('lasResponse');
     return JSON.parse(response);
   } catch (error) {
     throw new Error('their are an error');
@@ -69,8 +66,8 @@ export const getStats = async () => {
   };
 
   try {
-    obj.fileNumberParsed = await redisClient.get('fileNumberParsed');
-    obj.lineNumberParsed = await redisClient.get('lineNumberParsed');
+    obj.fileNumberParsed = await getAsync('fileNumberParsed');
+    obj.lineNumberParsed = await getAsync('lineNumberParsed');
     return obj;
   } catch (error) {
     throw new Error('their are an error');
