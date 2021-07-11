@@ -1,6 +1,5 @@
 import { Worker } from 'worker_threads';
 import { Response } from 'express';
-import * as pathModule from 'path';
 import {
   getFileNumberParsed,
   getLineNumberParsed,
@@ -26,7 +25,7 @@ export const parserWorker = (
 
     await saveLastResponse(response);
 
-    console.log('message parserWorker');
+    console.log('after parsing, in message event before res.json');
     await res.status(200).json(response);
   });
 
@@ -35,34 +34,4 @@ export const parserWorker = (
   });
 
   worker.on('exit', () => {});
-};
-
-export const readFileWorker = (
-  path: string,
-  workerDataObj: object | null = null,
-  res: Response
-) => {
-  const worker = new Worker(path, { workerData: workerDataObj });
-
-  let data: string = '';
-
-  worker.on('message', (response: string) => {
-    data += response;
-    // console.log('message readFileWorker');
-  });
-  worker.on('exit', () => {
-    const workerParser = parserWorker(
-      pathModule.join(__dirname, '..', './workers/parserWorker/parserWorker.js'),
-      {
-        value: data,
-        path: pathModule.resolve(
-          __dirname,
-          '..',
-          './workers/parserWorker/parserWorker.ts'
-        ),
-      },
-      res
-    );
-    console.log('exit readFileWorker');
-  });
 };

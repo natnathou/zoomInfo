@@ -1,22 +1,36 @@
-import { Request, Response } from 'express';
-import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
+import { Request, Response } from 'express';
 import { getLastResponse, getStats } from '../providers/csvDataProvider';
-import { readFileWorker } from '../tools/runWorker';
+import { parserWorker } from '../tools/runWorker';
 
 export const uploadFile = async (req: Request, res: Response) => {
   if (!req.file) {
     console.log('No file is available!');
     return res.status(500);
   } else {
-    const worker = readFileWorker(
-      path.join(__dirname, '..', './workers/readFileWorker/readFileWorker.js'),
-      {
-        value: { fileName: req.file.originalname, path: req.file.path },
-        path: path.resolve(__dirname, '..', './workers/readFileWorker/readFileWorker.ts'),
-      },
-      res
-    );
+    let dataFile = '';
+    console.log('read file is started');
+    let readStream = fs.createReadStream(path.resolve(req.file.path));
+
+    readStream.on('data', (chunk) => {
+      dataFile += chunk.toString();
+    });
+
+    readStream.on('end', () => {
+      console.log('end of read file');
+      fs.unlink(req.file.path, () => {
+        console.log(req.file.originalname, ' has been deleted');
+      });
+      const workerParser = parserWorker(
+        path.join(__dirname, '..', './workers/parserWorker/parserWorker.js'),
+        {
+          value: dataFile,
+          path: path.resolve(__dirname, '..', './workers/parserWorker/parserWorker.ts'),
+        },
+        res
+      );
+    });
   }
 };
 
