@@ -3,6 +3,7 @@ import fs from 'fs';
 import { Request, Response } from 'express';
 import { getLastResponse, getStats } from '../providers/csvDataProvider';
 import { parserWorker } from '../tools/runWorker';
+import { isMainThread, threadId } from 'worker_threads';
 
 export const uploadFile = async (req: Request, res: Response) => {
   if (!req.file) {
@@ -22,6 +23,9 @@ export const uploadFile = async (req: Request, res: Response) => {
       fs.unlink(req.file.path, () => {
         console.log(req.file.originalname, ' has been deleted');
       });
+      console.log(`Main isMainThread ${isMainThread}`);
+      console.log(`Main thread id is ${threadId}`);
+      console.log('Main process id is', process.pid);
       const workerParser = parserWorker(
         path.join(__dirname, '..', './workers/parserWorker/parserWorker.js'),
         {

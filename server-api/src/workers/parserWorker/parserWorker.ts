@@ -1,5 +1,9 @@
-import { parentPort, workerData } from 'worker_threads';
+import { isMainThread, parentPort, workerData, threadId } from 'worker_threads';
 import { parser } from '../../tools/parser';
+
+console.log(`worker isMainThread ${isMainThread}`);
+console.log(`worker thread id is ${threadId}`);
+console.log(`worker process id is ${process.pid}`);
 
 console.log('in worker parser, before parsing');
 const startTimer = Date.now();
