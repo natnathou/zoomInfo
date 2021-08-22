@@ -10,12 +10,12 @@ export const uploadFile = async (req: Request, res: Response) => {
     console.log('No file is available!');
     return res.status(500);
   } else {
-    let dataFile = '';
+    let dataFile: Buffer[] = [];
     console.log('read file is started');
     let readStream = fs.createReadStream(path.resolve(req.file.path));
 
     readStream.on('data', (chunk) => {
-      dataFile += chunk.toString();
+      dataFile.push(chunk as Buffer);
     });
 
     readStream.on('end', () => {
@@ -29,7 +29,7 @@ export const uploadFile = async (req: Request, res: Response) => {
       const workerParser = parserWorker(
         path.join(__dirname, '..', './workers/parserWorker/parserWorker.js'),
         {
-          value: dataFile,
+          value: Buffer.concat(dataFile).toString(),
           path: path.resolve(__dirname, '..', './workers/parserWorker/parserWorker.ts'),
         },
         res
