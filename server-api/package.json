@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm-run-all --parallel dev:*",
     "dev:start": "nodemon --legacy-watch -e ts,js --exec \"node --inspect=0.0.0.0:5858 --experimental-worker --require ts-node/register src/app.ts\"",
-    "dev:test": "jest --silent=true ./src/test"
+    "dev:test": "jest --silent=true ./src/test --maxWorkers=1 --detectOpenHandles"
   },
   "keywords": [],
   "author": "",

@@ -3,21 +3,32 @@ import request from 'supertest';
 import fs from 'mz/fs';
 import express from 'express';
 import path from 'path/posix';
+import redis from 'redis';
+import { client } from '../services/db';
+
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/', routes);
 
-describe('api testing', () => {
-  jest.setTimeout(60000);
+afterAll(() => {
+  client.quit();
+});
 
-  test('test stats routes return json', (done) => {
-    request(app).get('/stats').expect('Content-Type', /json/).expect(200, done);
+describe('api testing', () => {
+  test('test stats routes return json', async () => {
+    const req = await request(app)
+      .get('/stats')
+      .expect('Content-Type', /json/)
+      .expect(200);
   });
 
-  test('test latestFile routes return json', (done) => {
-    request(app).get('/latestFile').expect('Content-Type', /json/).expect(200, done);
+  test('test latestFile routes return json', async () => {
+    const req = await request(app)
+      .get('/latestFile')
+      .expect('Content-Type', /json/)
+      .expect(200);
   });
 
   test('test file upload', async () => {
@@ -29,11 +40,7 @@ describe('api testing', () => {
       }
     });
 
-    await request(app)
-      .post('/upload')
-      .attach('file', filePath)
-      .expect((response) => {
-        expect(response.status).toBe(200);
-      });
+    const req = await request(app).post('/upload').attach('file', filePath);
+    expect(req.status).toBe(200);
   });
 });
